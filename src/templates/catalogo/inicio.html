@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }} - Bienvenido</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            padding: 3rem;
+            max-width: 600px;
+        }
+        h1 { font-size: 3rem; margin-bottom: 1rem; color: #38bdf8; }
+        h2 { font-size: 1.5rem; color: #94a3b8; margin-bottom: 2rem; font-weight: 300; }
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+        .api-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .api-link {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: #38bdf8;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: all 0.2s;
+        }
+        .api-link:hover {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: #38bdf8;
+        }
+        .api-link code { font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="badge">NexusGamer API REST</div>
+        <h1>{{ titulo }}</h1>
+        <h2>{{ subtitulo }}</h2>
+        <div class="api-links">
+            <a class="api-link" href="/api/docs/">Swagger UI</a>
+            <a class="api-link" href="/api/redoc/">Redoc</a>
+            <a class="api-link" href="/api/schema/">OpenAPI Schema</a>
+            <a class="api-link" href="/api/v1/catalogo/productos/">Productos</a>
+            <a class="api-link" href="/api/v1/catalogo/categorias/">Categorías</a>
+            <a class="api-link" href="/api/v1/catalogo/marcas/">Marcas</a>
+        </div>
+    </div>
+</body>
+</html>
