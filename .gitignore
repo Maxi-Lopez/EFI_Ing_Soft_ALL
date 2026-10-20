@@ -20,3 +20,4 @@ wheels/
 *.swp
 *.swo
 .DS_Store
+src/db.sqlite3

@@ -24,7 +24,8 @@
 | `src/settings/` | Configuración Django (`settings.py`, `urls.py`, `wsgi.py`, `asgi.py`) |
 | `src/apps/usuarios/` | Perfil `persona` (1:1 con User de Django) + admin + migración `0001_initial` |
 | `src/apps/catalogo/` | 6 modelos, serializers duales, 6 ViewSets + 4 `@action`, admin, tests, template bienvenida |
-| `src/apps/{carrito,ordenes,pagos,envios,promociones,wishlist,reviews}/` | Apps creadas (estructura vacía, pendiente implementar) |
+| `src/apps/wishlist/` | Lista de deseos: `ListaDeseos` + `ItemListaDeseos`, ViewSet con `toggle`/`limpiar`, admin |
+| `src/apps/{carrito,ordenes,pagos,envios,promociones,reviews}/` | Apps creadas (estructura vacía, pendiente implementar) |
 
 ---
 
@@ -59,7 +60,7 @@
 - [x] Configurar perfil `persona` (1:1 con User de Django) + migraciones iniciales (`usuarios/migrations/0001_initial.py`)
 - [x] Setup `drf-spectacular` + Swagger UI + Redoc (`/api/schema/`, `/api/docs/`, `/api/redoc/`)
 - [x] Configurar CORS para `localhost:3000`
-- [x] Endpoints JWT (`/api/v1/token/`, `/api/v1/token/refresh/`)
+- [x] Endpoints JWT (`/api/token/`, `/api/token/refresh/`)
 - [x] `manage.py check` → 0 issues
 
 ### Fase 2 — Catálogo (Core público) ✅ COMPLETADA
@@ -92,11 +93,11 @@
 - [ ] Cálculo envío por zona/CP
 - [ ] Webhook mock para testing
 
-### Fase 6 — Promociones + Wishlist + Reviews ⏳ PENDIENTE
+### Fase 6 — Promociones + Wishlist (✅) + Reviews 🔄 PARCIAL
 
 - [ ] Cupón validation endpoint
 - [ ] Ofertas semanales homepage
-- [ ] Wishlist toggle
+- [x] Wishlist toggle, list, destroy, limpiar (solo autenticados)
 - [ ] Reviews solo verified purchase
 
 ### Fase 7 — Performance + Observabilidad ⏳ PENDIENTE
@@ -171,7 +172,7 @@ uv run python src/manage.py test apps.catalogo
 # Swagger UI: http://localhost:8000/api/docs/
 # Redoc: http://localhost:8000/api/redoc/
 # OpenAPI schema: http://localhost:8000/api/schema/
-# API catálogo: http://localhost:8000/api/v1/catalogo/
+# API catálogo: http://localhost:8000/api/catalogo/
 # Vista bienvenida: http://localhost:8000/catalogo/inicio/
 ```
 

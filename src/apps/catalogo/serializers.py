@@ -81,14 +81,12 @@ class ProductoPublicSerializer(serializers.ModelSerializer):
     """Producto con relaciones anidadas (solo lectura)."""
     marca = MarcaPublicSerializer(read_only=True)
     categoria = CategoriaPublicSerializer(read_only=True)
-    imagenes = ProductoImagenPublicSerializer(
-        source='imagenes', many=True, read_only=True
-    )
+    imagenes = ProductoImagenPublicSerializer(many=True, read_only=True)
     especificaciones = EspecificacionPublicSerializer(
-        source='especificaciones', many=True, read_only=True
+        many=True, read_only=True
     )
     variantes = VariantePublicSerializer(
-        source='variantes', many=True, read_only=True
+        many=True, read_only=True
     )
     precio_final = serializers.SerializerMethodField(read_only=True)
     stock_disponible = serializers.SerializerMethodField(read_only=True)

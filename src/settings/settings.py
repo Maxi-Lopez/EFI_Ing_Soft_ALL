@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Environment variables
 env = environ.Env(
-    DEBUG=(bool, False),
+    DEBUG=(bool, True),
 )
 environ.Env.read_env(BASE_DIR / '.env')
 
@@ -88,22 +88,31 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 ASGI_APPLICATION = 'settings.asgi.application'
 
 
-# Database - PostgreSQL (Supabase ready)
+# Database - SQLite por defecto para desarrollo local; override vía .env a PostgreSQL
+DB_ENGINE = env('DB_ENGINE', default='django.db.backends.sqlite3')
+DB_NAME = env('DB_NAME', default=BASE_DIR / 'db.sqlite3')
+DB_USER = env('DB_USER', default='')
+DB_PASSWORD = env('DB_PASSWORD', default='')
+DB_HOST = env('DB_HOST', default='')
+DB_PORT = env('DB_PORT', default='')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME', default='nexusgamer'),
-        'USER': env('DB_USER', default='postgres'),
-        'PASSWORD': env('DB_PASSWORD', default='postgres'),
-        'HOST': env('DB_HOST', default='localhost'),
-        'PORT': env('DB_PORT', default='5432'),
+        'ENGINE': DB_ENGINE,
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
         'CONN_MAX_AGE': 60,
-        'OPTIONS': {
-            'sslmode': env('DB_SSLMODE', default='prefer'),
-            'connect_timeout': 10,
-        },
     }
 }
+
+if DB_ENGINE == 'django.db.backends.postgresql':
+    DATABASES['default']['OPTIONS'] = {
+        'sslmode': env('DB_SSLMODE', default='prefer'),
+        'connect_timeout': 10,
+    }
 
 # Password validation
 
@@ -195,19 +204,15 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'COMPONENT_SPLIT_REQUEST': True,
-    'SCHEMA_PATH_PREFIX': '/api/v1',
+    'SCHEMA_PATH_PREFIX': '/api',
 }
 
 
-# Cache - Redis (Upstash / local)
+# Cache - locmem por defecto para desarrollo local; override vía .env a Redis
 CACHES = {
     'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': env('REDIS_URL', default='redis://127.0.0.1:6379/1'),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        },
-        'KEY_PREFIX': 'nexusgamer',
+        'BACKEND': env('CACHE_BACKEND', default='django.core.cache.backends.locmem.LocMemCache'),
+        'LOCATION': env('CACHE_LOCATION', default='nexusgamer-locmem'),
     }
 }
 

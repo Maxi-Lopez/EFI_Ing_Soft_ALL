@@ -27,21 +27,22 @@ urlpatterns = [
     ),
 
     # JWT authentication
-    path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path(
-        'api/v1/token/refresh/',
+        'api/token/refresh/',
         TokenRefreshView.as_view(),
         name='token_refresh',
     ),
 
     # Apps (descomentar a medida que se implementan)
-    # path('api/v1/usuarios/', include('apps.usuarios.urls')),
-    path('api/v1/catalogo/', include('apps.catalogo.urls')),
-    # path('api/v1/carrito/', include('apps.carrito.urls')),
-    # path('api/v1/ordenes/', include('apps.ordenes.urls')),
-    # path('api/v1/pagos/', include('apps.pagos.urls')),
-    # path('api/v1/envios/', include('apps.envios.urls')),
-    # path('api/v1/promociones/', include('apps.promociones.urls')),
-    # path('api/v1/wishlist/', include('apps.wishlist.urls')),
-    # path('api/v1/reviews/', include('apps.reviews.urls')),
+    # path('api/usuarios/', include('apps.usuarios.urls')),
+    path('api/catalogo/', include('apps.catalogo.urls')),
+    path('api/wishlist/', include('apps.wishlist.urls')),
+    path('api/carrito/', include('apps.carrito.urls')),
+    # path('api/carrito/', include('apps.carrito.urls')),
+    # path('api/ordenes/', include('apps.ordenes.urls')),
+    # path('api/pagos/', include('apps.pagos.urls')),
+    # path('api/envios/', include('apps.envios.urls')),
+    # path('api/promociones/', include('apps.promociones.urls')),
+    # path('api/reviews/', include('apps.reviews.urls')),
 ]

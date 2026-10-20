@@ -52,7 +52,8 @@ Este proyecto se desarrolla como trabajo práctico para la materia **Ingeniería
 | Vista principal con template de bienvenida | ✅ Completado |
 | Swagger / Redoc / OpenAPI 3 | ✅ Completado |
 | CORS para frontend (`localhost:3000`) | ✅ Completado |
-| Apps restantes (carrito, órdenes, pagos, etc.) | ⏳ Pendiente |
+| App wishlist — lista de deseos por usuario | ✅ Completado |
+| Apps restantes (carrito, órdenes, pagos, reviews) | ⏳ Pendiente |
 | Docker + Despliegue | ⏳ Pendiente |
 
 ---
@@ -180,16 +181,16 @@ Producto (1) ──┬──> ProductoImagen (N)
 
 ## 🔌 Endpoints API
 
-Todos los endpoints están bajo el prefijo `/api/v1/`.
+Todos los endpoints están bajo el prefijo `/api/`.
 
-### 🔐 Autenticación (`/api/v1/`)
+### 🔐 Autenticación (`/api/`)
 
 | Método | Endpoint | Descripción | Acceso |
 |--------|----------|-------------|--------|
 | POST | `/token/` | Obtener par de tokens JWT (access + refresh) | Público |
 | POST | `/token/refresh/` | Renovar access token usando refresh token | Público |
 
-### 📦 Catálogo (`/api/v1/catalogo/`) — Público
+### 📦 Catálogo (`/api/catalogo/`) — Público
 
 | Método | Endpoint | Descripción | Acceso |
 |--------|----------|-------------|--------|
@@ -206,6 +207,15 @@ Todos los endpoints están bajo el prefijo `/api/v1/`.
 | GET | `/imagenes/` | Listar imágenes de productos | Público |
 | GET | `/especificaciones/` | Listar especificaciones de productos | Público |
 | GET | `/variantes/` | Listar variantes de productos | Público |
+
+### 💝 Wishlist (`/api/wishlist/`) — Autenticado
+
+| Método | Endpoint | Descripción | Acceso |
+|--------|----------|-------------|--------|
+| GET | `/items/` | Listar items de mi lista de deseos | Autenticado |
+| POST | `/items/toggle/` | Agregar o quitar producto (toggle) | Autenticado |
+| DELETE | `/items/{id}/` | Quitar item de la lista | Autenticado |
+| DELETE | `/items/limpiar/` | Vaciar toda la lista de deseos | Autenticado |
 
 ### 🧭 Filtros disponibles en `/productos/`
 
@@ -315,10 +325,10 @@ La API estará disponible en: `http://localhost:8000`
 
 ```bash
 # Listar productos
-curl http://localhost:8000/api/v1/catalogo/productos/
+curl http://localhost:8000/api/catalogo/productos/
 
 # Buscar productos
-curl "http://localhost:8000/api/v1/catalogo/productos/buscar/?q=rtx"
+curl "http://localhost:8000/api/catalogo/productos/buscar/?q=rtx"
 
 # Ver Swagger UI
 open http://localhost:8000/api/docs/
@@ -371,7 +381,7 @@ CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 │ FASE 3  ⏳ Auth + Usuario                                    │
 │ FASE 4  ⏳ Carrito + Órdenes                                 │
 │ FASE 5  ⏳ Pagos + Envíos (Mock)                             │
-│ FASE 6  ⏳ Promociones + Wishlist + Reviews                  │
+│ FASE 6  🔄 Promociones + Wishlist (✅) + Reviews                  │
 │ FASE 7  ⏳ Performance + Observabilidad                      │
 │ FASE 8  ⏳ Documentación + Deploy                            │
 └──────────────────────────────────────────────────────────────┘
@@ -396,7 +406,13 @@ CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 - Vista principal con template
 - 17 tests automatizados
 
-### Fases 3–8 (Pendientes)
+### Fase 6 — Wishlist (Completada)
+
+- Modelos: `ListaDeseos` (1:1 con usuario), `ItemListaDeseos`
+- ViewSet de items con `toggle`, `list`, `destroy`, `limpiar`
+- Solo usuarios autenticados (propios items)
+- Serializers con nested relations (producto, variante)
+
 
 Ver `MEMORIA.md` para el detalle completo de cada fase.
 
@@ -440,13 +456,6 @@ Ver `MEMORIA.md` para el detalle completo de cada fase.
 
 **Instrucciones:** Tomá capturas con tu navegador o Postman/Insomnia mostrando los endpoints funcionando y guardalas en la carpeta `capturas/`.
 
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
-
----
 
 <div align="center">
   <p>Desarrollado con ❤️ para Ingeniería de Software — EFI</p>
