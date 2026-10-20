@@ -184,7 +184,7 @@ id, resena_id (FK), imagen_url, orden
 
 ## 🔌 Endpoints API (v1)
 
-### Auth (`/api/v1/auth/`)
+### Auth (`/api/auth/`)
 ```
 POST   /auth/register/           # Registro + email verification (mock)
 POST   /auth/login/              # JWT obtain (access + refresh)
@@ -197,7 +197,7 @@ POST   /auth/password/reset/     # Request reset (mock email)
 POST   /auth/password/reset/confirm/  # Confirm reset
 ```
 
-### Catálogo (`/api/v1/catalogo/`) - **Públicos (AllowAny)**
+### Catálogo (`/api/catalogo/`) - **Públicos (AllowAny)**
 ```
 GET    /categorias/              # Tree structure ?nivel=1
 GET    /categorias/{slug}/       # Detail + productos paginados
@@ -217,7 +217,7 @@ GET    /productos/buscar/        # Full-text search ?q=rtx+4080
 # &specs={"memoria": "16gb", "tipo": "gddr6"}
 ```
 
-### Carrito (`/api/v1/carrito/`) - **Autenticado o Session**
+### Carrito (`/api/carrito/`) - **Autenticado o Session**
 ```
 GET    /carrito/                 # Obtener carrito (crea si no existe)
 POST   /carrito/items/           # Agregar item
@@ -227,7 +227,7 @@ DELETE /carrito/                 # Vaciar carrito
 POST   /carrito/sync/            # Merge session cart → user cart (login)
 ```
 
-### Órdenes (`/api/v1/ordenes/`) - **Autenticado**
+### Órdenes (`/api/ordenes/`) - **Autenticado**
 ```
 POST   /ordenes/                 # Crear orden desde carrito (valida stock)
 GET    /ordenes/                 # Listar mis órdenes (paginado, filtros estado)
@@ -235,7 +235,7 @@ GET    /ordenes/{numero}/        # Detalle orden + items + historial + tracking
 POST   /ordenes/{numero}/cancelar/  # Cancelar si estado lo permite
 ```
 
-### Promociones (`/api/v1/promociones/`) - **Públicos**
+### Promociones (`/api/promociones/`) - **Públicos**
 ```
 GET    /promociones/             # Activas vigentes
 GET    /promociones/{slug}/      # Detail
@@ -243,20 +243,20 @@ POST   /promociones/validar/     # Validar cupón {codigo, carrito_items} → de
 GET    /ofertas-semana/          # Landing page weekly deals
 ```
 
-### Pagos (`/api/v1/pagos/`) - **Mock educacional**
+### Pagos (`/api/pagos/`) - **Mock educacional**
 ```
 POST   /pagos/iniciar/           # {orden_id, metodo_pago_id, cuotas} → {payment_id, mock_redirect_url}
 GET    /pagos/{id}/              # Estado pago
 POST   /pagos/webhook/           # Mock MercadoPago IPN (para testing)
 ```
 
-### Envíos (`/api/v1/envios/`)
+### Envíos (`/api/envios/`)
 ```
 POST   /envios/calcular/         # {codigo_postal, items[]} → {metodos_disponibles[]}
 GET    /envios/{tracking}/tracking/  # Mock tracking info
 ```
 
-### Usuario (`/api/v1/usuarios/`) - **Autenticado**
+### Usuario (`/api/usuarios/`) - **Autenticado**
 ```
 GET    /usuarios/perfil/         # Perfil completo
 PUT    /usuarios/perfil/         # Actualizar
@@ -267,18 +267,26 @@ DELETE /usuarios/direcciones/{id}/
 POST   /usuarios/direcciones/{id}/predeterminada/
 ```
 
-### Wishlist (`/api/v1/wishlist/`) - **Autenticado**
+### Wishlist (`/api/wishlist/`) - **Autenticado**
 ```
 GET    /wishlist/                # Mi lista
 POST   /wishlist/                # Agregar
 DELETE /wishlist/{producto_id}/  # Quitar
 ```
 
-### Reviews (`/api/v1/reviews/`)
+### Reviews (`/api/reviews/`)
 ```
 GET    /productos/{producto_id}/reviews/  # Paginado, filtros puntuación
 POST   /productos/{producto_id}/reviews/  # Crear (solo verified purchase)
 POST   /reviews/{id}/util/         # Marcar útil
+```
+
+### Wishlist (`/api/wishlist/`) - **Autenticado**
+```
+GET    /items/                 # Mis items de lista de deseos
+POST   /items/toggle/          # Agregar/quitar producto {producto, variante?}
+DELETE /items/{id}/            # Quitar item
+DELETE /items/limpiar/         # Vaciar lista completa
 ```
 
 ---
