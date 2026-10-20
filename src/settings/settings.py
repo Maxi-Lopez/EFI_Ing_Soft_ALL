@@ -105,11 +105,6 @@ DATABASES = {
     }
 }
 
-
-# Custom user model
-AUTH_USER_MODEL = 'usuarios.Usuario'
-
-
 # Password validation
 
 AUTH_PASSWORD_VALIDATORS = [

@@ -16,33 +16,24 @@ CREATE EXTENSION IF NOT EXISTS "btree_gin";
 -- 1. AUTH & USUARIOS
 -- ============================================================
 
--- Tabla: users_usuario (Custom User Model)
-CREATE TABLE users_usuario (
-    id BIGSERIAL PRIMARY KEY,
-    email VARCHAR(254) UNIQUE NOT NULL,
-    username VARCHAR(150) UNIQUE NOT NULL,
-    password VARCHAR(128) NOT NULL,
-    first_name VARCHAR(150),
-    last_name VARCHAR(150),
-    is_staff BOOLEAN DEFAULT FALSE NOT NULL,
-    is_active BOOLEAN DEFAULT TRUE NOT NULL,
-    date_joined TIMESTAMPTZ DEFAULT NOW() NOT NULL,
-    last_login TIMESTAMPTZ,
+-- Tabla: auth_user (User por defecto de django.contrib.auth.models.User)
+-- Creada por Django; se mantiene como referencia para las FK de perfil.
+-- Tabla: persona (perfil 1:1 del User por defecto de Django; PK compartida con auth_user)
+CREATE TABLE persona (
+    user_id BIGINT PRIMARY KEY REFERENCES auth_user(id) ON DELETE CASCADE,
     dni VARCHAR(20),
     telefono VARCHAR(50),
     fecha_nacimiento DATE,
     avatar_url VARCHAR(500)
 );
 
--- Índices para users_usuario
-CREATE INDEX idx_users_usuario_email ON users_usuario(email);
-CREATE INDEX idx_users_usuario_username ON users_usuario(username);
-CREATE INDEX idx_users_usuario_is_active ON users_usuario(is_active);
+-- Índices para persona
+CREATE INDEX idx_persona_dni ON persona(dni) WHERE dni IS NOT NULL;
 
 -- Tabla: users_direccion
 CREATE TABLE users_direccion (
     id BIGSERIAL PRIMARY KEY,
-    usuario_id BIGINT NOT NULL REFERENCES users_usuario(id) ON DELETE CASCADE,
+    usuario_id BIGINT NOT NULL REFERENCES auth_user(id) ON DELETE CASCADE,
     alias VARCHAR(100) NOT NULL,
     calle VARCHAR(200) NOT NULL,
     numero VARCHAR(20) NOT NULL,
@@ -189,7 +180,7 @@ CREATE INDEX idx_catalogo_variante_atributos_gin ON catalogo_variante USING GIN(
 -- Tabla: carrito_carrito
 CREATE TABLE carrito_carrito (
     id BIGSERIAL PRIMARY KEY,
-    usuario_id BIGINT REFERENCES users_usuario(id) ON DELETE CASCADE,
+    usuario_id BIGINT REFERENCES auth_user(id) ON DELETE CASCADE,
     session_key CHAR(40),
     creado_en TIMESTAMPTZ DEFAULT NOW() NOT NULL,
     actualizado_en TIMESTAMPTZ DEFAULT NOW() NOT NULL,
@@ -239,7 +230,7 @@ CREATE TABLE ordenes_estadoorden (
 CREATE TABLE ordenes_orden (
     id BIGSERIAL PRIMARY KEY,
     numero_orden VARCHAR(50) UNIQUE NOT NULL,
-    usuario_id BIGINT NOT NULL REFERENCES users_usuario(id) ON DELETE RESTRICT,
+    usuario_id BIGINT NOT NULL REFERENCES auth_user(id) ON DELETE RESTRICT,
     estado_id BIGINT NOT NULL REFERENCES ordenes_estadoorden(id) ON DELETE RESTRICT DEFAULT 1,
     subtotal NUMERIC(12, 2) NOT NULL CHECK (subtotal >= 0),
     descuento_total NUMERIC(12, 2) DEFAULT 0.00 NOT NULL CHECK (descuento_total >= 0),
@@ -297,7 +288,7 @@ CREATE TABLE ordenes_historialestado (
     orden_id BIGINT NOT NULL REFERENCES ordenes_orden(id) ON DELETE CASCADE,
     estado_anterior_id BIGINT REFERENCES ordenes_estadoorden(id) ON DELETE SET NULL,
     estado_nuevo_id BIGINT NOT NULL REFERENCES ordenes_estadoorden(id) ON DELETE RESTRICT,
-    usuario_id BIGINT REFERENCES users_usuario(id) ON DELETE SET NULL,
+    usuario_id BIGINT REFERENCES auth_user(id) ON DELETE SET NULL,
     notas TEXT,
     creado_en TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
@@ -471,7 +462,7 @@ CREATE INDEX idx_envios_envio_payload_gin ON envios_envio USING GIN(payload_trac
 -- Tabla: wishlist_listadeseos
 CREATE TABLE wishlist_listadeseos (
     id BIGSERIAL PRIMARY KEY,
-    usuario_id BIGINT UNIQUE NOT NULL REFERENCES users_usuario(id) ON DELETE CASCADE,
+    usuario_id BIGINT UNIQUE NOT NULL REFERENCES auth_user(id) ON DELETE CASCADE,
     creado_en TIMESTAMPTZ DEFAULT NOW() NOT NULL,
     actualizado_en TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
@@ -498,7 +489,7 @@ CREATE UNIQUE INDEX idx_wishlist_item_lista_producto_variante_unique ON wishlist
 CREATE TABLE reviews_resena (
     id BIGSERIAL PRIMARY KEY,
     producto_id BIGINT NOT NULL REFERENCES catalogo_producto(id) ON DELETE CASCADE,
-    usuario_id BIGINT NOT NULL REFERENCES users_usuario(id) ON DELETE CASCADE,
+    usuario_id BIGINT NOT NULL REFERENCES auth_user(id) ON DELETE CASCADE,
     orden_item_id BIGINT REFERENCES ordenes_ordenitem(id) ON DELETE SET NULL,
     puntuacion INTEGER NOT NULL CHECK (puntuacion >= 1 AND puntuacion <= 5),
     titulo VARCHAR(200),

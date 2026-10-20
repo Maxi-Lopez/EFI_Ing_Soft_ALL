@@ -1,28 +1,25 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
-from .models import Usuario
+from .models import Persona
 
 
-@admin.register(Usuario)
-class UsuarioAdmin(UserAdmin):
-    model = Usuario
-    list_display = [
-        'email', 'username', 'first_name', 'last_name',
-        'dni', 'telefono', 'is_staff', 'is_active',
-    ]
-    list_filter = ['is_staff', 'is_active', 'date_joined']
-    search_fields = ['email', 'username', 'dni', 'first_name', 'last_name']
-    ordering = ['-date_joined']
+@admin.register(Persona)
+class PersonaAdmin(admin.ModelAdmin):
+    model = Persona
+    list_display = ['user', 'dni', 'telefono', 'fecha_nacimiento']
+    list_filter = ['user__is_active', 'user__is_staff', 'user__date_joined']
+    search_fields = ['user__username', 'user__email', 'dni']
+    ordering = ['-user__date_joined']
 
-    fieldsets = UserAdmin.fieldsets + (
+    fieldsets = (
+        ('Datos de cuenta', {
+            'fields': ('user',),
+        }),
         ('Datos personales', {
             'fields': ('dni', 'telefono', 'fecha_nacimiento', 'avatar_url'),
         }),
     )
 
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        ('Datos personales', {
-            'fields': ('dni', 'telefono', 'fecha_nacimiento', 'avatar_url'),
-        }),
-    )
+    autocomplete_fields = ['user']
