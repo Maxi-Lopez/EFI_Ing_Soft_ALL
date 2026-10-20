@@ -38,6 +38,7 @@ urlpatterns = [
     # path('api/usuarios/', include('apps.usuarios.urls')),
     path('api/catalogo/', include('apps.catalogo.urls')),
     path('api/wishlist/', include('apps.wishlist.urls')),
+    path('api/carrito/', include('apps.carrito.urls')),
     # path('api/carrito/', include('apps.carrito.urls')),
     # path('api/ordenes/', include('apps.ordenes.urls')),
     # path('api/pagos/', include('apps.pagos.urls')),

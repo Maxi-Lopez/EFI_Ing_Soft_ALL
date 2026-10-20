@@ -456,13 +456,6 @@ Ver `MEMORIA.md` para el detalle completo de cada fase.
 
 **Instrucciones:** Tomá capturas con tu navegador o Postman/Insomnia mostrando los endpoints funcionando y guardalas en la carpeta `capturas/`.
 
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
-
----
 
 <div align="center">
   <p>Desarrollado con ❤️ para Ingeniería de Software — EFI</p>
